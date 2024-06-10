@@ -29,8 +29,6 @@
 </script>
 
 <script lang="ts">
-    import VercelInject from '$lib/components/layout/vercel-inject.svelte';
-    import GoogleTag from '$lib/components/layout/google-tag.svelte';
     import { browser } from "$app/environment";
     import Aside from "$lib/components/layout/main/Aside.svelte";
     import AsideNewSong from "$lib/components/layout/main/Aside-NewSong.svelte";
@@ -74,11 +72,6 @@
     beforeNavigate(resetPageAside(pageAside));
     /*afterNavigate(setPageAsideDisplay(pageAside));*/
 
-    //setContext songs
-    if (data.songs) {
-        setContext("songs", data.songs);
-    }
-
     //user
     const user = writable<{ logined: boolean; nickname: string }>(data.user);
     setContext("user", user);
@@ -92,14 +85,16 @@
     }
 </script>
 
-<VercelInject/>
-<GoogleTag/>
-{#if $theme}
+<div style={browser ? "" : "transform:translateX(-100%);"}>
     <Header>
         <svelte:fragment slot="left">
             <HeaderItem href="/" useHover={false}>
                 {#if $isMobile}
-                    <img class="logo" src="/assets/img/logo_mobile.png" alt="logo" />
+                    <img
+                        class="logo"
+                        src="/assets/img/logo_mobile.png"
+                        alt="logo"
+                    />
                 {:else}
                     <img class="logo" src="/assets/img/logo.png" alt="logo" />
                 {/if}
@@ -139,7 +134,7 @@
     </Header>
     <Main>
         <svelte:fragment slot="main">
-            {#if $navigating}
+            {#if $navigating && !($navigating.from?.url.pathname === "/song" && $navigating.to?.url.pathname === "/song")}
                 <Loading />
             {:else}
                 <slot />
@@ -151,7 +146,7 @@
         </Aside>
     </Main>
     <Footer version={data.version} />
-{/if}
+</div>
 
 <style>
     :global(body[data-theme="light"]) {
@@ -161,6 +156,9 @@
     :global(body[data-theme="dark"]) {
         background-color: black;
         color: white;
+    }
+    :global(body[data-theme="light"] a) {
+        color: #cf4844;
     }
     :global(body[data-theme="dark"] a) {
         color: #e1a743;

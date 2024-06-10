@@ -6,6 +6,7 @@ import UserController from "$lib/module/common/user/user-controller.server";
 import { config } from 'dotenv';
 import checkPermissions from "$lib/module/server/hooks/permissionCheck.server";
 import BanController from "$lib/module/server/hooks/ban-controller.server";
+import allowCors from "$lib/module/server/hooks/allow-cors";
 //import logger from "$lib/module/server/hooks/logger.server";
 
 config();
@@ -50,8 +51,10 @@ const checkPermission = checkPermissions([
     }
 ])
 
-Array.prototype.toSorted = function(compareFn?:any){
+const cors = allowCors(["https://donderhiroba.jp"]);
+
+Array.prototype.toSorted = function (compareFn?: any) {
     return [...this].sort(compareFn);
 }
 
-export const handle = sequence(BanController.checkIpHandle ,authHandle, getUserData, checkPermission);
+export const handle = sequence(BanController.checkIpHandle, cors, authHandle, getUserData, checkPermission);

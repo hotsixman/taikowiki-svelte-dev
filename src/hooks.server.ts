@@ -57,4 +57,4 @@ Array.prototype.toSorted = function (compareFn?: any) {
     return [...this].sort(compareFn);
 }
 
-export const handle = sequence(BanController.checkIp ,authHandle, getUserData, checkPermission);
+export const handle = sequence(BanController.checkIp, cors, authHandle, getUserData, checkPermission);

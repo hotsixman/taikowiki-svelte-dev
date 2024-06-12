@@ -47,6 +47,7 @@
     import User from "$lib/components/layout/main/User.svelte";
     import axios from "axios";
     import Footer from "$lib/components/layout/main/Footer.svelte";
+    import GoogleTag from "$lib/components/layout/google-tag.svelte";
 
     export let data;
     //deepFreeze songs
@@ -85,6 +86,7 @@
     }
 </script>
 
+<GoogleTag/>
 <div style={browser ? "" : "transform:translateX(-100%);"}>
     <Header>
         <svelte:fragment slot="left">
